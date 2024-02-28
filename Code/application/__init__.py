@@ -1,7 +1,11 @@
 from flask import Flask, render_template
+from application.database import db
+
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app.config['secret_key'] = 'sdkvnksjn'
+app.config['sqlalchemy_database_url'] = 'sqlite:///database.sqlite3'
 
-
+db.init_app(app)
 @app.route('/')
 def index():
     return render_template('index.html')
