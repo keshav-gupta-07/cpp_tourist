@@ -1,5 +1,5 @@
-from Code.application.models import User
-from Code.application.variables import *
+from application.models import User
+from application.variables import *
 from application import app
 from flask import redirect, render_template, request, url_for
 from application.database import db
@@ -33,9 +33,31 @@ def register():
         email = request.form['email']
         password = request.form['password']
         address = request.form['address']
-        role = request.form['role']
+        #role = request.form['role']
         user = User(name, phone, email, password, address, CUSTOMER)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('register.html', success='You have successfully registered')
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    '''
+    if request.method == 'GET':
+        return render_template('login.html')
+    elif request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            return redirect(url_for('home'))
+        else:
+            return render_template('login.html', error='Invalid email or password')
+    '''
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        if user:
+            return redirect(url_for('index'))
+    return render_template('login.html', error='Invalid email or password')
