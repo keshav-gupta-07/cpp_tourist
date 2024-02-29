@@ -57,7 +57,8 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email, password=password).first()
         if user:
+            print("Login successfu & logged in user :", user)
             return redirect(url_for('index'))
     return render_template('login.html', error='Invalid email or password')
